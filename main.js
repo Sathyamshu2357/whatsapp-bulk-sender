@@ -1,14 +1,17 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 
-function createWindow () {
+require('electron-reload')(__dirname);
+
+
+function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 600,
+    height: 800,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      nodeIntegration: true
     }
   })
 
@@ -24,7 +27,7 @@ function createWindow () {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow()
-  
+
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -41,3 +44,40 @@ app.on('window-all-closed', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+
+let base64QrData;
+
+ipcMain.on("qr", (event, ...args) => {
+  console.log(...args);
+  event.returnValue = base64QrData;
+});
+
+const venom = require('venom-bot');
+
+let venomClient;
+venom
+  .create(
+    'sessionName',
+    (base64Qr, asciiQR, attempts, urlCode) => {
+      console.log(asciiQR); // Optional to log the QR in the terminal
+      base64QrData = base64Qr;
+    },
+    undefined,
+    { logQR: false }
+  )
+  .then((client) => {
+    venomClient = client;
+    console.log(client);
+  })
+  .catch((erro) => {
+    console.log(erro);
+  });
+
+
+  ipcMain.on("msg", async (event, ...args) => {
+    const [number, msg] = args;
+    console.log(number, msg);
+    const a = await venomClient.sendText(`${number}@c.us`, msg);
+    event.returnValue = a;
+  });
