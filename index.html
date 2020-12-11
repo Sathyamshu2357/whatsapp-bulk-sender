@@ -20,7 +20,7 @@
       </figure>
     </section>
 
-    <section id="main" class="section is-hidden">
+    <section id="main" class="section">
       <div class="container">
         <div class="tabs is-small is-toggle">
           <ul>
@@ -36,7 +36,54 @@
             <input class="input is-small" id="number" type="text" placeholder="9999999998">
           </div>
           <div class="tab-pane" id="csv">CSV content</div>
-          <div class="tab-pane" id="google-spreadsheet">Google Spreadsheet content</div>
+          <div class="tab-pane" id="google-spreadsheet">
+            <h3>Google Spreadsheet</h3>
+            <div class="field my-2">
+              <div class="file is-small has-name">
+                <label class="file-label">
+                  <input id="cred-file" class="file-input" type="file" name="resume">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-id-badge"></i>
+                    </span>
+                    <span class="file-label">
+                      Select Credentials File
+                    </span>
+                  </span>
+                  <span class="file-name">
+                    ./credentials.json
+                  </span>
+                </label>
+              </div>
+            </div>
+            <input id="sheet-id" class="input is-small my-2" type="text" placeholder="spreadsheet-id"
+              oninput="handleSheetIdInput()">
+            <div class="columns is-mobile is-gapless">
+              <div class="column is-narrow mr-2">
+                <div class="select is-multiple">
+                  <select id="sheet" multiple size="4" onchange="handleSheetSelect()">
+                    <option value="sheet1">Sheet1</option>
+                    <option value="sheet2">Sheet2</option>
+                    <option value="sheet3">Sheet3</option>
+                    <option value="sheet4">Sheet4</option>
+                    <option value="sheet5">Sheet5</option>
+                    <option value="sheet6">Sheet6</option>
+                  </select>
+                </div>
+              </div>
+              <div class="column is-narrow mr-2">
+                <div class="select is-multiple">
+                  <select id="column" multiple size="4" onchange="handleColumnSelect()">
+                    <option value="column1">Column1</option>
+                    <option value="column2">Column2</option>
+                    <option value="column3">Column3</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
         </div>
       </div>
 
@@ -47,9 +94,9 @@
         <article class="message">
           <div class="message-header">Messsage Preview
             <div class="select">
-              <select>
-                <option>Select dropdown</option>
-                <option>With options</option>
+              <select id="number-list" onchange="handleNumberSelect()">
+                <option value="number1">Number 1</option>
+                <option value="number2">Number 2</option>
               </select>
             </div>
           </div>
@@ -59,6 +106,7 @@
         </article>
 
         <a class="button is-primary" id="send">Send Campaign</a>
+        <a class="button is-primary" id="sendAll">Send Campaign To All</a>
       </div>
 
 
@@ -67,6 +115,7 @@
 
     <!-- You can also require other files to run in this process -->
   </body>
+  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
   <script src="./renderer.js"></script>
 
   </html>

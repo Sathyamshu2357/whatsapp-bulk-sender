@@ -2,6 +2,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const venom = require('venom-bot');
 const { parsePhoneNumber } = require('libphonenumber-js');
+const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 
 require('electron-reload')(__dirname);
@@ -70,7 +71,6 @@ venom
     },
     {
       logQR: false,
-      autoClose: false
     }
   )
   .then((client) => venomClient = client)
@@ -84,12 +84,52 @@ const sendText = async (number, msg) => {
   return respoonse;
 }
 
+const sendAllText = async (numbers, msg) => {
+  return Promise.all(numbers.map((number) => sendText(number, msg)));
+}
+
 const test = () => {
   return new Promise((resolve) => setTimeout(() => resolve("ome"), 5000))
 }
 
+const fetchSheetDetails = async (sheetId, credentialsPath) => {
+  const doc = new GoogleSpreadsheet(sheetId);
+  const creds = require(credentialsPath);
+  await doc.useServiceAccountAuth(creds);
+  await doc.loadInfo(); // loads document properties and worksheets
+  console.log(doc.title);
+  return Object.keys(doc.sheetsByTitle);
+}
+
+const fetchColumnDetails = async (sheetId, credentialsPath, sheetTitle) => {
+  const doc = new GoogleSpreadsheet(sheetId);
+  const creds = require(credentialsPath);
+  await doc.useServiceAccountAuth(creds);
+  await doc.loadInfo(); // loads document properties and worksheets
+  console.log(doc.title);
+  const sheet = doc.sheetsByTitle[sheetTitle];
+  await sheet.getRows();
+  return sheet.headerValues;
+}
+
+const fetchNumbers = async (sheetId, credentialsPath, sheetTitle, column) => {
+  const doc = new GoogleSpreadsheet(sheetId);
+  const creds = require(credentialsPath);
+  await doc.useServiceAccountAuth(creds);
+  await doc.loadInfo(); // loads document properties and worksheets
+  console.log(doc.title);
+  const sheet = doc.sheetsByTitle[sheetTitle];
+  const rows = await sheet.getRows();
+  return rows.map((row) => row[column]);
+}
+
+
 const rendererCallables = {
   "send": sendText,
+  "sendAll": sendAllText,
+  "fetchSheets": fetchSheetDetails,
+  "fetchColumns": fetchColumnDetails,
+  "fetchNumbers": fetchNumbers,
   "test": test
 };
 
