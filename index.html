@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
@@ -12,11 +12,16 @@
   </head>
 
   <body>
-    <section class="section">
+    <section id="whatsapp-login" class="section is-fullheight">
+      <!-- <a id="connect-wa" class="button is-primary">Connect Whatsapp</a> -->
+      <progress class="progress is-small is-primary is-vcentered"></progress>
+      <figure id="qrCode" class="image is-square is-hidden">
+        <img>
+      </figure>
+    </section>
 
-      <a id="connect-wa" class="button is-primary">Connect Whatsapp</a>
-
-      <div class="container my-6">
+    <section id="main" class="section is-hidden">
+      <div class="container">
         <div class="tabs is-small is-toggle">
           <ul>
             <li class="is-active"><a id="form">Form</a></li>
@@ -28,7 +33,7 @@
         <div class="tab-content">
           <div class="tab-pane is-active" id="form">
             <h3>Form Content</h3>
-            <input class="input is-small" type="text" placeholder="9999999998">
+            <input class="input is-small" id="number" type="text" placeholder="9999999998">
           </div>
           <div class="tab-pane" id="csv">CSV content</div>
           <div class="tab-pane" id="google-spreadsheet">Google Spreadsheet content</div>
@@ -37,7 +42,7 @@
 
 
       <div class="container my-6">
-        <textarea class="textarea my-3" placeholder="Message content"></textarea>
+        <textarea class="textarea my-3" id="msg" placeholder="Message content" oninput="handleMsgInput()"></textarea>
 
         <article class="message">
           <div class="message-header">Messsage Preview
@@ -48,17 +53,12 @@
               </select>
             </div>
           </div>
-          <div class="message-body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>, tempus
-            quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus
-            diam,
-            et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus. Donec
-            sodales, arcu et sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a neque. Donec
-            dui urna, vehicula et sem eget, facilisis sodales sem.
+          <div id="preview" class="message-body">
+            Preview of the msg.
           </div>
         </article>
 
-        <a class="button is-primary">Send Campaign</a>
+        <a class="button is-primary" id="send">Send Campaign</a>
       </div>
 
 

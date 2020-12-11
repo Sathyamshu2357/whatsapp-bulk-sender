@@ -1,13 +1,16 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain } = require('electron')
-const path = require('path')
+const venom = require('venom-bot');
+const { parsePhoneNumber } = require('libphonenumber-js');
+
 
 require('electron-reload')(__dirname);
 
+let mainWindow;
 
 function createWindow() {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 600,
     height: 800,
     webPreferences: {
@@ -46,38 +49,56 @@ app.on('window-all-closed', function () {
 // code. You can also put them in separate files and require them here.
 
 
-let base64QrData;
-
-ipcMain.on("qr", (event, ...args) => {
-  console.log(...args);
-  event.returnValue = base64QrData;
-});
-
-const venom = require('venom-bot');
-
 let venomClient;
+
 venom
   .create(
     'sessionName',
     (base64Qr, asciiQR, attempts, urlCode) => {
       console.log(asciiQR); // Optional to log the QR in the terminal
-      base64QrData = base64Qr;
+      qrData = base64Qr;
+      mainWindow.webContents.send('qr', qrData)
     },
-    undefined,
-    { logQR: false }
+    (statusSession, session) => {
+      console.log('Status Session: ', statusSession); //return isLogged || notLogged || browserClose || qrReadSuccess || qrReadFail || autocloseCalled || desconnectedMobile || deleteToken
+      //Create session wss return "serverClose" case server for close
+      console.log('Session name: ', session);
+      if (statusSession === "inChat" || statusSession === "inLogged") {
+        console.log("venom session is logged-in");
+        mainWindow.webContents.send('connected')
+      }
+    },
+    {
+      logQR: false,
+      autoClose: false
+    }
   )
-  .then((client) => {
-    venomClient = client;
-    console.log(client);
-  })
-  .catch((erro) => {
-    console.log(erro);
-  });
+  .then((client) => venomClient = client)
+  .catch(console.error);
 
 
-  ipcMain.on("msg", async (event, ...args) => {
-    const [number, msg] = args;
-    console.log(number, msg);
-    const a = await venomClient.sendText(`${number}@c.us`, msg);
-    event.returnValue = a;
-  });
+const sendText = async (number, msg) => {
+  const parsedNumber = parsePhoneNumber(number, "IN").number;
+  console.log(parsedNumber, msg);
+  const respoonse = await venomClient.sendText(`${parsedNumber}@c.us`, msg);
+  return respoonse;
+}
+
+const test = () => {
+  return new Promise((resolve) => setTimeout(() => resolve("ome"), 5000))
+}
+
+const rendererCallables = {
+  "send": sendText,
+  "test": test
+};
+
+ipcMain.handle('call', async (event, method, ...args) => {
+  let returnValue;
+  console.log(`handling call ${method}`)
+  const callable = rendererCallables[method];
+  if (typeof callable === "function") {
+    returnValue = await rendererCallables[method](...args);
+  }
+  return returnValue;
+})

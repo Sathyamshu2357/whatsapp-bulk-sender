@@ -1,9 +1,34 @@
 const { ipcRenderer } = require("electron/renderer");
 
-const response = document.getElementById("response");
+const handleLogin = () => {
+    const loginSection = document.querySelector("#whatsapp-login");
+    const mainSection = document.querySelector("#main");
+    loginSection.classList.add("is-hidden");
+    mainSection.classList.remove("is-hidden");
+    document.getElementById("send").addEventListener("click", sendButtonHandler);
+}
+
+const handleQrData = (qrData) => {
+    console.log(qrData);
+    const loginSection = document.querySelector("#whatsapp-login");
+    loginSection.querySelector(".progress").classList.add("is-hidden");
+    loginSection.querySelector(".image").classList.remove("is-hidden");
+    loginSection.querySelector(".image").querySelector("img").setAttribute("src", qrData);
+}
+
+
+const sendButtonHandler = async () => {
+    const number = document.getElementById("number").value;
+    const msg = document.getElementById("msg").value;
+    console.log(number, msg);
+    const res = await ipcRenderer.invoke("call", "send", number, msg);
+    console.log(res);
+}
+
+ipcRenderer.on("connected", () => handleLogin());
+ipcRenderer.on("qr", (e, qrData) => handleQrData(qrData));
 
 window.onload = () => {
-
     // Tabs Start
     document.querySelectorAll('.tabs').forEach((tab) => {
         tab.querySelectorAll('li').forEach((li) => {
@@ -16,23 +41,11 @@ window.onload = () => {
             }
         })
     })
-
 }
 
-const loginButtonHandler = () => {
-    console.log("hey")
-    const qrResponse = ipcRenderer.sendSync("qr", "ping");
-    response.innerText = qrResponse;
-    document.getElementById("container").innerHTML += `<img src="${qrResponse}"/>`;
+const handleMsgInput = () => {
+    const x = document.getElementById("msg").value;
+    document.getElementById("preview").innerHTML = x;
 }
 
-const sendButtonHandler = () => {
-    const number = document.getElementById("number").value;
-    const msg = document.getElementById("msg").value;
-    console.log(number, msg);
-    const res = ipcRenderer.sendSync("msg", number, msg);
-    console.log(res);
-}
-
-// document.getElementById("request").addEventListener("click", loginButtonHandler);
-// document.getElementById("send").addEventListener("click", sendButtonHandler);
+window.handleMsgInput = handleMsgInput;
