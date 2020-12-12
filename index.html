@@ -92,7 +92,40 @@
 
 
       <div class="container my-6">
-        <textarea class="textarea my-3" id="msg" placeholder="Message content" oninput="handleMsgInput()"></textarea>
+        <div id="msg-type" class="tabs is-small is-toggle">
+          <ul>
+            <li class="is-active"><a id="msg-text">TEXT</a></li>
+            <li><a id="msg-image">IMAGE</a></li>
+          </ul>
+        </div>
+
+        <div id="msg-input" class="tab-content">
+          <div class="tab-pane is-active" id="msg-text">
+            <textarea class="textarea my-3" id="msg" placeholder="Message content"
+              oninput="handleMsgInput()"></textarea>
+          </div>
+          <div class="tab-pane" id="msg-image">
+            <div class="field my-2">
+              <div class="file is-small has-name">
+                <label class="file-label">
+                  <input id="image-file" class="file-input" type="file" name="resume">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-id-badge"></i>
+                    </span>
+                    <span class="file-label">
+                      Select Image File
+                    </span>
+                  </span>
+                  <span class="file-name">
+                  </span>
+                </label>
+              </div>
+            </div>
+            <textarea class="textarea my-3" id="image-caption" placeholder="Image caption"
+              oninput="handleImgCaptionInput()"></textarea>
+          </div>
+        </div>
 
         <article class="message">
           <div class="message-header">Messsage Preview

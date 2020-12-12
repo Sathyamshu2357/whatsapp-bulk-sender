@@ -86,7 +86,6 @@ const sendText = async (number, msg) => {
 
 const sendImage = async (number, imgPath, imgName, captionText) => {
   const parsedNumber = parsePhoneNumber(number, "IN").number;
-  console.log(parsedNumber, msg);
   const respoonse = await venomClient.sendImage(`${parsedNumber}@c.us`, imgPath, imgName, captionText);
   return respoonse;
 }
@@ -101,7 +100,7 @@ const send = async (type, number, ...args) => {
 } 
 
 const sendAll = async (type, numbers, ...args) => {
-  return Promise.all(numbers.map((number) => sendCallables[type](number, ...args)));
+  return Promise.all(numbers.map((number) => send(type, number, ...args)));
 }
 
 const test = () => {

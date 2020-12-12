@@ -110,25 +110,45 @@ const handleMsgInput = () => {
     document.getElementById("preview").innerHTML = x;
 }
 
+const handleImgCaptionInput = () => {
+    const imgPath = document.getElementById("image-file").files[0].path;
+    const x = document.getElementById("image-caption").value;
+    document.getElementById("preview").innerHTML = `<img src="${imgPath}">` + "\n" + x;
+}
+
+const getMsgArgs = (numberOrNumbers) => {
+    const msgType = document.getElementById("msg-type").querySelector('li.is-active').querySelector('a').id;
+    let args;
+    if (msgType === "msg-text") {
+        const msg = document.getElementById("msg").value;
+        console.log(numberOrNumbers, msg);
+        args = ["TEXT", numberOrNumbers, msg];
+    } else if (msgType === "msg-image") {
+        const imgPath = document.getElementById("image-file").files[0].path;
+        const captionText = document.getElementById("image-caption").value;
+        args = ["IMAGE", numberOrNumbers, imgPath, "SAMPLE-NAME", captionText];
+    } 
+    return args;
+}
+
 const sendButtonHandler = async () => {
     const number = document.getElementById("number-list").value;
-    const msg = document.getElementById("msg").value;
-    console.log(number, msg);
-    const res = await ipcRenderer.invoke("call", "send", "TEXT", number, msg);
+    console.log(number);
+    const res = await ipcRenderer.invoke("call", "send", ...getMsgArgs(number));
     console.log(res);
 }
 
 const sendAllButtonHandler = async () => {
     const numbers = Array.from(document.getElementById("number-list").options).map(o => o.value);
-    const msg = document.getElementById("msg").value;
-    console.log(number, msg);
-    const res = await ipcRenderer.invoke("call", "sendAll", "TEXT", numbers, msg);
+    console.log(numbers);
+    const res = await ipcRenderer.invoke("call", "sendAll", ...getMsgArgs(numbers));
     console.log(res);
 }
 
 window.handleNumberFormInput = handleNumberFormInput;
 window.handleSheetIdInput = handleSheetIdInput;
 window.handleMsgInput = handleMsgInput;
+window.handleImgCaptionInput = handleImgCaptionInput;
 window.handleSheetSelect = handleSheetSelect;
 window.handleColumnSelect = handleColumnSelect;
 window.handleNumberSelect = handleNumberSelect;
