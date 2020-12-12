@@ -33,7 +33,10 @@
         <div class="tab-content">
           <div class="tab-pane is-active" id="form">
             <h3>Form Content</h3>
-            <input class="input is-small" id="number" type="text" placeholder="9999999998">
+            <form id="numbers-form">
+              <input class="input is-small my-1" type="text" placeholder="9999999998" oninput="handleNumberFormInput()">
+            </form>
+            <a class="button is-small" id="add-number-entry">Add Number</a>
           </div>
           <div class="tab-pane" id="csv">CSV content</div>
           <div class="tab-pane" id="google-spreadsheet">

@@ -84,8 +84,24 @@ const sendText = async (number, msg) => {
   return respoonse;
 }
 
-const sendAllText = async (numbers, msg) => {
-  return Promise.all(numbers.map((number) => sendText(number, msg)));
+const sendImage = async (number, imgPath, imgName, captionText) => {
+  const parsedNumber = parsePhoneNumber(number, "IN").number;
+  console.log(parsedNumber, msg);
+  const respoonse = await venomClient.sendImage(`${parsedNumber}@c.us`, imgPath, imgName, captionText);
+  return respoonse;
+}
+
+const sendCallables = {
+  "TEXT": sendText,
+  "IMAGE": sendImage
+}
+
+const send = async (type, number, ...args) => {
+  return sendCallables[type](number, ...args);
+} 
+
+const sendAll = async (type, numbers, ...args) => {
+  return Promise.all(numbers.map((number) => sendCallables[type](number, ...args)));
 }
 
 const test = () => {
@@ -125,8 +141,8 @@ const fetchNumbers = async (sheetId, credentialsPath, sheetTitle, column) => {
 
 
 const rendererCallables = {
-  "send": sendText,
-  "sendAll": sendAllText,
+  "send": send,
+  "sendAll": sendAll,
   "fetchSheets": fetchSheetDetails,
   "fetchColumns": fetchColumnDetails,
   "fetchNumbers": fetchNumbers,

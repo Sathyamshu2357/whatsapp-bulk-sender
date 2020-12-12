@@ -34,6 +34,9 @@ window.onload = () => {
         })
     })
 
+    // Handle form tab
+    document.getElementById("add-number-entry").addEventListener("click", addNumberEntry)
+
     // Handle file selection
     let fileInputs = document.querySelectorAll('.file.has-name')
     for (let fileInput of fileInputs) {
@@ -48,6 +51,18 @@ window.onload = () => {
             }
         })
     }
+}
+
+const addNumberEntry = async () => {
+    document.getElementById("numbers-form").innerHTML += `<input class="input is-small my-1" type="text" placeholder="9999999998" oninput="handleNumberFormInput()">`
+}
+
+const handleNumberFormInput = async () => {
+    const numbers = Array.from(document.getElementById("numbers-form").elements).map((e) => e.value);
+    document.getElementById("number-list").innerHTML = "";
+    numbers.forEach((number) => {
+        document.getElementById("number-list").innerHTML += `<option value="${number}">${number}</option>\n`
+    })
 }
 
 const handleSheetIdInput = async () => {
@@ -99,7 +114,7 @@ const sendButtonHandler = async () => {
     const number = document.getElementById("number-list").value;
     const msg = document.getElementById("msg").value;
     console.log(number, msg);
-    const res = await ipcRenderer.invoke("call", "send", number, msg);
+    const res = await ipcRenderer.invoke("call", "send", "TEXT", number, msg);
     console.log(res);
 }
 
@@ -107,10 +122,11 @@ const sendAllButtonHandler = async () => {
     const numbers = Array.from(document.getElementById("number-list").options).map(o => o.value);
     const msg = document.getElementById("msg").value;
     console.log(number, msg);
-    const res = await ipcRenderer.invoke("call", "sendAll", numbers, msg);
+    const res = await ipcRenderer.invoke("call", "sendAll", "TEXT", numbers, msg);
     console.log(res);
 }
 
+window.handleNumberFormInput = handleNumberFormInput;
 window.handleSheetIdInput = handleSheetIdInput;
 window.handleMsgInput = handleMsgInput;
 window.handleSheetSelect = handleSheetSelect;
