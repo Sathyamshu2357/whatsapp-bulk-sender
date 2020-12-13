@@ -3,8 +3,25 @@
   "version": "0.0.1",
   "description": "Send bulk messages via Whatsapp",
   "main": "main.js",
+  "build": {
+		"appId": "com.thoughtincentive.whatsapp-bulk-sender",
+		"productName": "WhatsApp Bulk Sender",
+		"mac": {
+			"category": "public.app-category.social-networking"
+		},
+		"dmg": {
+			"icon": false
+		},
+		"linux": {
+			"target": ["AppImage"],
+			"category": "Network"
+		}
+	},
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps",
+		"build": "electron-builder --mac --windows --linux",
+		"release": "electron-builder --mac --windows --linux --publish always"
   },
   "repository": "https://github.com/nandubatchu/whatsapp-bulk-sender",
   "keywords": [
@@ -13,12 +30,14 @@
     "venom",
     "messaging"
   ],
-  "author": "GitHub",
+  "author": "nandubatchu@gmail.com",
   "devDependencies": {
     "electron": "^11.0.3",
+    "electron-builder": "^22.9.1",
     "electron-reload": "^1.5.0"
   },
   "dependencies": {
+    "electron-updater": "^4.3.5",
     "google-spreadsheet": "^3.0.14",
     "libphonenumber-js": "^1.9.6",
     "venom-bot": "^2.1.0"
