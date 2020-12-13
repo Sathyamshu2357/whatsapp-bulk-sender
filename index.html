@@ -39,7 +39,37 @@
             <a class="button is-small" id="add-number-entry">Add Number</a>
             <a class="button is-small" id="load-all" onclick="handleNumberFormInput()" >Load All</a>
           </div>
-          <div class="tab-pane" id="csv">CSV content</div>
+          <div class="tab-pane" id="csv">
+            <h3>CSV Content</h3>
+            <div class="field my-2">
+              <div class="file is-small has-name">
+                <label class="file-label">
+                  <input id="csv-file" class="file-input" type="file" name="resume" oninput="handleCSVFile()">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label">
+                      Select CSV File
+                    </span>
+                  </span>
+                  <span class="file-name">
+                    ./file.csv
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="columns is-mobile is-gapless">
+              <div class="column is-narrow mr-2">
+                <div class="select is-multiple">
+                  <select id="sheetcols" multiple size="4" onchange="handleCSVCols()">
+                    <option value="sheet1">Attribute1</option>
+                    <option value="sheet2">Attribute2</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="tab-pane" id="google-spreadsheet">
             <h3>Google Spreadsheet</h3>
             <div class="field my-2">

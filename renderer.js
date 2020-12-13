@@ -1,4 +1,5 @@
 const { ipcRenderer } = require("electron/renderer");
+let csvToJson = require("convert-csv-to-json");
 
 const handleLogin = () => {
     const loginSection = document.querySelector("#whatsapp-login");
@@ -60,6 +61,40 @@ const addNumberEntry = async () => {
     newopt.setAttribute("placeholder", "9999999998");
     document.getElementById("numbers-form").appendChild(newopt);
 }
+
+const handleCSVFile = async () => {
+    csvFilePath = document.getElementById("csv-file").files[0].path;
+    let json = csvToJson.getJsonFromCsv(csvFilePath);
+    var keys = Object.keys(json[0])[0].split(',');
+    var colnames = document.getElementById("sheetcols");
+    colnames.innerHTML = "";
+    for(each in keys) { 
+        var newopt = document.createElement("option");
+        newopt.setAttribute("value", keys[each]);
+        newopt.innerText = keys[each];
+        colnames.appendChild(newopt);
+    }
+}
+
+const handleCSVCols = async () => {
+    csvFilePath = document.getElementById("csv-file").files[0].path;
+    let json = csvToJson.getJsonFromCsv(csvFilePath);
+    var keys = Object.keys(json[0])[0].split(',');  
+    var attr = document.getElementById("sheetcols").value;  
+    var idx = keys.findIndex(check);
+    function check(key) { return key == attr };
+
+    document.getElementById("number-list").innerHTML = "";
+    for(each in json) {
+        var vals = Object.values(json[each])[0].split(',');
+        var newopt = document.createElement("option");
+        newopt.setAttribute("value",vals[idx]);
+        newopt.innerText = vals[idx];
+        document.getElementById("number-list").appendChild(newopt);
+    }
+}
+
+
 
 const handleNumberFormInput = async () => {
     const numbers = Array.from(document.getElementById("numbers-form").elements).map((e) => e.value);
