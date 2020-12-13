@@ -5,6 +5,7 @@ const { parsePhoneNumber } = require('libphonenumber-js');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 
+
 require('electron-reload')(__dirname);
 
 let mainWindow;
@@ -26,9 +27,7 @@ function createWindow() {
   // mainWindow.webContents.openDevTools()
 }
 
-app.on("ready", () => {
-	autoUpdater.checkForUpdatesAndNotify();
-});
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

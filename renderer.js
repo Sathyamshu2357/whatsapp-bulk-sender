@@ -54,14 +54,21 @@ window.onload = () => {
 }
 
 const addNumberEntry = async () => {
-    document.getElementById("numbers-form").innerHTML += `<input class="input is-small my-1" type="text" placeholder="9999999998" oninput="handleNumberFormInput()">`
+    var newopt = document.createElement("input");
+    newopt.setAttribute("class", "input is-small my-1");
+    newopt.setAttribute("type", "text");
+    newopt.setAttribute("placeholder", "9999999998");
+    document.getElementById("numbers-form").appendChild(newopt);
 }
 
 const handleNumberFormInput = async () => {
     const numbers = Array.from(document.getElementById("numbers-form").elements).map((e) => e.value);
     document.getElementById("number-list").innerHTML = "";
     numbers.forEach((number) => {
-        document.getElementById("number-list").innerHTML += `<option value="${number}">${number}</option>\n`
+        var newopt = document.createElement("option");
+        newopt.setAttribute("value",`${number}`);
+        newopt.innerText = `${number}`;
+        document.getElementById("number-list").appendChild(newopt);
     })
 }
 
