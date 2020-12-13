@@ -1,27 +1,29 @@
 {
   "name": "whatsapp-bulk-sender",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Send bulk messages via Whatsapp",
   "main": "main.js",
   "build": {
-		"appId": "com.thoughtincentive.whatsapp-bulk-sender",
-		"productName": "WhatsApp Bulk Sender",
-		"mac": {
-			"category": "public.app-category.social-networking"
-		},
-		"dmg": {
-			"icon": false
-		},
-		"linux": {
-			"target": ["AppImage"],
-			"category": "Network"
-		}
-	},
+    "appId": "com.thoughtincentive.whatsapp-bulk-sender",
+    "productName": "WhatsApp Bulk Sender",
+    "mac": {
+      "category": "public.app-category.social-networking"
+    },
+    "dmg": {
+      "icon": false
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Network"
+    }
+  },
   "scripts": {
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
-		"build": "electron-builder --windows",
-		"release": "electron-builder --windows --publish always"
+    "build": "electron-builder --windows",
+    "release": "electron-builder --windows --publish always"
   },
   "repository": "https://github.com/nandubatchu/whatsapp-bulk-sender",
   "keywords": [
