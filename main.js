@@ -3,7 +3,7 @@ const { app, BrowserWindow, ipcMain } = require('electron')
 const venom = require('venom-bot');
 const { parsePhoneNumber } = require('libphonenumber-js');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-
+const autoUpdater = require("electron-updater");
 
 require('electron-reload')(__dirname);
 
