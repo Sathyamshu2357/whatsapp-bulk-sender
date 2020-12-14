@@ -35,10 +35,10 @@
   "author": "nandubatchu@gmail.com",
   "devDependencies": {
     "electron": "^11.0.3",
-    "electron-builder": "^22.9.1",
-    "electron-reload": "^1.5.0"
+    "electron-builder": "^22.9.1"
   },
   "dependencies": {
+    "electron-reload": "^1.5.0",
     "electron-updater": "^4.3.5",
     "google-spreadsheet": "^3.0.14",
     "libphonenumber-js": "^1.9.6",
