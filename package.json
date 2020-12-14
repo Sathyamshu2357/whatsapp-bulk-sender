@@ -1,6 +1,6 @@
 {
   "name": "whatsapp-bulk-sender",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Send bulk messages via Whatsapp",
   "main": "main.js",
   "build": {
@@ -35,11 +35,14 @@
   "author": "nandubatchu@gmail.com",
   "devDependencies": {
     "electron": "^11.0.3",
-    "electron-builder": "^22.9.1",
-    "electron-reload": "^1.5.0"
+    "electron-builder": "^22.9.1"
   },
   "dependencies": {
+<<<<<<< HEAD
     "convert-csv-to-json": "^1.0.0",
+=======
+    "electron-reload": "^1.5.0",
+>>>>>>> upstream/master
     "electron-updater": "^4.3.5",
     "google-spreadsheet": "^3.0.14",
     "libphonenumber-js": "^1.9.6",

@@ -5,7 +5,6 @@ const { parsePhoneNumber } = require('libphonenumber-js');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 
-
 require('electron-reload')(__dirname);
 
 let mainWindow;
