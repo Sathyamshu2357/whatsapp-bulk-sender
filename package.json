@@ -1,6 +1,6 @@
 {
   "name": "whatsapp-bulk-sender",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Send bulk messages via Whatsapp",
   "main": "main.js",
   "build": {
